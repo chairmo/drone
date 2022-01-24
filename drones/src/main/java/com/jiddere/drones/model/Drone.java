@@ -1,15 +1,15 @@
 package com.jiddere.drones.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
+
+import com.jiddere.drones.model.utils.ModelType;
+import com.jiddere.drones.model.utils.State;
 
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class Drone {
 	private long id;
 
 	@Size(min = 3, max = 100)
-	private String sNumber;
+	private String serial;
 
 	@Enumerated(EnumType.STRING)
 	private ModelType model;
@@ -31,8 +31,5 @@ public class Drone {
 
 	@Enumerated(EnumType.STRING)
 	private State state;
-	
-	@OneToMany(mappedBy = "drone")
-	private List<Medication> medications;
 
 }
