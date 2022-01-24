@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.ObjectNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.jiddere.drones.controller.errors.DroneExceptionError;
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DroneServiceImpl implements DroneService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DroneService.class);
 
 	private final DroneRepository droneRepository;
 	private final MedicationRepository medicationRepository;
@@ -106,19 +102,6 @@ public class DroneServiceImpl implements DroneService {
 
 	}
 
-//	@Scheduled(fixedDelay = 6000)
-//	public void getBatteryInfo() {
-//		List<Drone> drones = droneRepository.findAll();
-//		
-//		for (Drone drone : drones) {
-////			drone.getBattery();
-//			LOGGER.info("battery level: ", drone.getBattery() +
-//					"%  for drone with serial No.: ", drone.getSerial());
-//			System.out.printf("battery level: ", drone.getBattery() +
-//					"%  for drone with serial No.: ", drone.getSerial());
-//		}
-//	}
-
 	@Override
 	public Drone getDrone(long droneId) {
 		Optional<Drone> dOptional = droneRepository.findById(droneId);
@@ -126,18 +109,6 @@ public class DroneServiceImpl implements DroneService {
 			throw new DroneExceptionError("Drone not found");
 		}
 		return dOptional.get();
-	}
-
-	@Override
-	@Scheduled(fixedDelay = 6000)
-	public void checkBattery() {
-		List<Drone> drones = droneRepository.findAll();
-
-		for (Drone drone : drones) {
-			LOGGER.info("battery level: ", drone.getBattery() + "%  for drone with serial No.: ", drone.getSerial());
-			System.out.printf("battery level: ", drone.getBattery() + "%  for drone with serial No.: ",
-					drone.getSerial());
-		}
 	}
 
 }

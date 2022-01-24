@@ -49,12 +49,6 @@ public class DroneController {
 		return new ResponseEntity<>(droneService.getDroneBattery(id), HttpStatus.OK);
 	}
 	
-	@GetMapping("/check")
-	public ResponseEntity<String> dronesBatteryCheck(){
-		this.droneService.checkBattery();
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
 	@PostMapping("/new")
 	public ResponseEntity<?> addDrone(@RequestBody @Valid Drone drone){
 		this.droneService.addDrone(drone);

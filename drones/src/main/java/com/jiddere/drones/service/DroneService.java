@@ -13,6 +13,6 @@ public interface DroneService {
 	List<Drone> getAvailableDrones();
 	Drone getDrone(long droneId);
 	int getDroneBattery(long droneId);
-	void checkBattery();
+//	void checkBattery();
 	
 }
