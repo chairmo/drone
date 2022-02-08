@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import com.jiddere.drones.model.Drone;
 import com.jiddere.drones.repository.DroneRepository;
 
+/** This is a scheduler class for logging the battery percentage of all drones together
+ with the drone serial number at intervals, 
+ both the initial and fixedDelay values is in the properties file**/
 @Component
 public class Scheduler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);

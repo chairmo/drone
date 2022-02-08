@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DroneServiceImpl implements DroneService {
-
+	private static int DRONE_WEIGHT = 500;
 	private final DroneRepository droneRepository;
 	private final MedicationRepository medicationRepository;
 
@@ -46,7 +46,8 @@ public class DroneServiceImpl implements DroneService {
 	@Override
 	public List<Drone> getAvailableDrones() {
 		List<Drone> drones = droneRepository.findAll();
-
+		
+		//assume that only drone in the state of IDLE or LOADING are available to carry medications
 		List<Drone> drones2 = new ArrayList<>();
 		for (Drone drone : drones) {
 			if (drone.getBattery() >= 25 && (drone.getState() == State.IDLE || drone.getState() == State.LOADING)) {
@@ -69,7 +70,7 @@ public class DroneServiceImpl implements DroneService {
 	@Override
 	public void addDrone(Drone drone) {
 		Drone drone2 = new Drone();
-		drone2.setWeight(drone.getWeight());
+//		drone2.setWeight(drone.getWeight());
 		drone2.setSerial(drone.getSerial());
 		drone2.setModel(drone.getModel());
 		drone2.setState(drone.getState());
@@ -81,11 +82,24 @@ public class DroneServiceImpl implements DroneService {
 
 	@Override
 	public void addMedication(long droneId, MedicationDto medication) {
+
 		Medication med = new Medication();
 		List<Drone> drones = getAvailableDrones();
 
-		if (drones.isEmpty() || medication.getWeight() >= 500) {
-			throw new DroneExceptionError("No drone available or medication weight is greater than 500 gram");
+		if (drones.isEmpty()) {
+			throw new DroneExceptionError("No drone available");
+		}
+
+		// sum all the weight of Medications in a given drone
+		List<MedicationDto> mList = getDroneMedications(droneId);
+		int sum =0;
+		if (!mList.isEmpty()) {
+			sum = mList.stream().filter(weight ->
+			weight.getWeight() > 0).mapToInt(weight -> weight.getWeight()).sum();
+		}
+
+		if ((sum + medication.getWeight()) > DRONE_WEIGHT) {
+			throw new DroneExceptionError("A drone cannot carry more than 500 gram ");
 		}
 		for (Drone drone : drones) {
 			if (drone.getId() == droneId) {

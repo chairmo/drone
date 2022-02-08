@@ -5,6 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class CodeValidator implements ConstraintValidator<Code, String> {
 
+	/**this validates the code field for only alphabets A-Z, 0-9 and underscore using regex*/
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
